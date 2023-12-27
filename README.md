@@ -19,7 +19,7 @@ gomobile init
 ### iOS 
 
 ```
-gomobile bind -target=ios .
+gomobile bind -target=ios -o ./ios/loopringGoSign.xcframework
 ```
 
 This command will generate a binary according to the target platform.
@@ -29,7 +29,6 @@ Drag the binary into project and build.
 ### Android 
 
 ```
-mkdir android
 gomobile bind  -target=android  -o ./android/loopringGoSign.aar
 ```
 
