@@ -10,6 +10,10 @@ Install [Xcode Command Line Tools](https://developer.apple.com/downloads/)
 go install golang.org/x/mobile/cmd/gomobile@latest
 ```
 
+## wasm
+wasm tinygo: v0.30.0
+[wasm_exec.js](src%2Fapi%2Fsign%2Fwasm_exec.js) from `$(tinygo env TINYGOROOT)targets/wasm_exec.js`
+
 ```
 gomobile init
 ```
