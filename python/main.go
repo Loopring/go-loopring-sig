@@ -46,16 +46,27 @@ import (
 // 	return signedMessage, nil
 // }
 
-func SignEddsa(privateKey string, hash string) string {
-	pk := loopring.NewPrivateKeyFromString(privateKey)
-	sig := pk.SignPoseidon(utils.NewIntFromString(hash))
 
-	return "0x" +
+//export SignEddsa
+func SignEddsa(privateKey *C.char, hash *C.char) *C.char {
+	fmt.Println("enter go SignEddsa!")
+
+	privateKey2 := C.GoString(privateKey)
+	hash2 := C.GoString(hash)
+
+	fmt.Printf("privateKey: %s\n", privateKey2)
+	fmt.Printf("hash: %s\n", hash2)
+	
+	pk := loopring.NewPrivateKeyFromString(privateKey2)
+	sig := pk.SignPoseidon(utils.NewIntFromString(hash2))
+
+	return C.CString("0x" +
 		fmt.Sprintf("%064s", sig.R8.X.Text(16)) +
 		fmt.Sprintf("%064s", sig.R8.Y.Text(16)) +
-		fmt.Sprintf("%064s", sig.S.Text(16))
+		fmt.Sprintf("%064s", sig.S.Text(16)))
 }
 
+//export PoseidonHash
 func PoseidonHash(input string) string {
 	data := strings.Split(input, ",")
 	size := len(data)
@@ -72,6 +83,7 @@ func PoseidonHash(input string) string {
 	return hash.String()
 }
 
+//export SignRequest
 func SignRequest(privateKey string, method string, url string, data string) string {
 	result, err := loopring.SignRequest(
 		loopring.NewPrivateKeyFromString(privateKey),
