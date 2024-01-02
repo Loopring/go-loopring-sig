@@ -49,13 +49,13 @@ import (
 
 //export SignEddsa
 func SignEddsa(privateKey *C.char, hash *C.char) *C.char {
-	fmt.Println("enter go SignEddsa!")
+	//fmt.Println("enter go SignEddsa!")
 
 	privateKey2 := C.GoString(privateKey)
 	hash2 := C.GoString(hash)
 
-	fmt.Printf("privateKey: %s\n", privateKey2)
-	fmt.Printf("hash: %s\n", hash2)
+	//fmt.Printf("privateKey: %s\n", privateKey2)
+	//fmt.Printf("hash: %s\n", hash2)
 	
 	pk := loopring.NewPrivateKeyFromString(privateKey2)
 	sig := pk.SignPoseidon(utils.NewIntFromString(hash2))
@@ -67,8 +67,9 @@ func SignEddsa(privateKey *C.char, hash *C.char) *C.char {
 }
 
 //export PoseidonHash
-func PoseidonHash(input string) string {
-	data := strings.Split(input, ",")
+func PoseidonHash(input *C.char) *C.char {
+	input2 := C.GoString(input)
+	data := strings.Split(input2, ",")
 	size := len(data)
 	bigData := make([]*big.Int, size)
 	for i := range bigData {
@@ -77,25 +78,29 @@ func PoseidonHash(input string) string {
 
 	hash, err := poseidon.Hash(bigData)
 	if err != nil {
-		return ""
+		return C.CString("")
 	}
 
-	return hash.String()
+	return C.CString(hash.String())
 }
 
 //export SignRequest
-func SignRequest(privateKey string, method string, url string, data string) string {
+func SignRequest(privateKey *C.char, method *C.char, url *C.char, data *C.char) *C.char {
+	privateKey2 := C.GoString(privateKey)
+	method2 := C.GoString(method)
+	url2 := C.GoString(url)
+	data2 := C.GoString(data)
 	result, err := loopring.SignRequest(
-		loopring.NewPrivateKeyFromString(privateKey),
-		method,
-		url,
+		loopring.NewPrivateKeyFromString(privateKey2),
+		method2,
+		url2,
 		"",
-		data,
+		data2,
 	)
 	if err != nil {
-		return ""
+		return C.CString("")
 	}
-	return result
+	return C.CString(result)
 }
 
 func main() {}

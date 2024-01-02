@@ -75,8 +75,8 @@ extern "C" {
 #endif
 
 extern char* SignEddsa(char* privateKey, char* hash);
-extern GoString PoseidonHash(GoString input);
-extern GoString SignRequest(GoString privateKey, GoString method, GoString url, GoString data);
+extern char* PoseidonHash(char* input);
+extern char* SignRequest(char* privateKey, char* method, char* url, char* data);
 
 #ifdef __cplusplus
 }
