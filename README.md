@@ -37,3 +37,9 @@ gomobile bind  -target=android  -o ./android/loopringGoSign.aar
 ```
 
 You can find the aar file in the android directory.
+
+### Python
+
+go build -o loopringGoSign.so -buildmode=c-shared python/main.go
+
+ln -s ../../../../go-loopring-sig/loopringGoSign.so loopringGoSign.so
